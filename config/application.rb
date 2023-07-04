@@ -17,3 +17,10 @@ module SignupLoginApi
     # the framework and any gems in your application.
   end
 end
+
+# config.middleware.insert_before 0, Rack::Cors do
+#   allow do
+#     origins '*'  # Replace '*' with the appropriate origin URL if needed
+#     resource '*', headers: :any, methods: [:get, :post, :options]
+#   end
+# end
