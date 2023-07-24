@@ -1,64 +1,46 @@
-
 class CollectionsController < ApplicationController
+ skip_before_action :verify_authenticity_token, only: [:create]
+  before_action :find_project, only: [:create, :index, :show, :destroy]
+
+
   def create
-  #   project = Project.find(params[:project_id])
-  #   collection = project.collections.build(collection_params)
-  #   if collection.save
-  #     render json: { status: 200, collection: { name: collection.name, project_id: collection.project_id } }
-  #   else
-  #     render json: { status: 400, message: collection.errors.full_messages.join(', ') }
-  #   end
-  # rescue ActiveRecord::RecordNotFound
-  #   render json: { status: 404, message: 'Project not found' }
-  # end
-  project = Project.find(params[:project_id])
-    collection = project.collections.build(collection_params)
+    collection = @project.collections.build(collection_params)
     if collection.save
-      render json: { status: 200, collection: { name: collection.name, project_id: collection.project_id } }
+      render json: { collection: { name: collection.name, project_id: collection.project_id } }
     else
-      render json: { status: 400, message: collection.errors.full_messages.join(', ') }
+      render json: { message: collection.errors.full_messages.join(', ') }, status: :bad_request
     end
-  rescue ActiveRecord::RecordNotFound
-    render json: { status: 404, message: 'Project not found' }
   end
 
   def index
-    project = Project.find(params[:project_id])
-    collections = project.collections
-    render json: { status: 200, collections: collections }
-  rescue ActiveRecord::RecordNotFound
-    render json: { status: 404, message: 'Project not found' }
+    collections = @project.collections
+    render json: { collections: collections }
   end
 
   def show
-    project = Project.find(params[:project_id])
-    collection = project.collections.find(params[:id])
-    render json: { status: 200, collection: collection }
+    collection = @project.collections.find(params[:id])
+    render json: { collection: collection }
   rescue ActiveRecord::RecordNotFound
-    render json: { status: 404, message: 'Collection not found' }
+    render json: { message: 'Collection not found' }, status: :not_found
   end
 
   def destroy
-    project = Project.find(params[:project_id])
-    collection = project.collections.find(params[:id])
+    collection = @project.collections.find(params[:id])
     collection.destroy
-    render json: { status: 200, message: 'Deleted successfully' }
+    render json: { message: 'Deleted successfully' }
   rescue ActiveRecord::RecordNotFound
-    render json: { status: 404, message: 'Collection not found' }
+    render json: { message: 'Collection not found' }, status: :not_found
   end
 
   private
 
-  # def collection_params
-  #   params.require(:collection).permit(:name)
-  # end
-  # def generate_random_name
-  #   # Generate a random name using a combination of characters
-  #   charset = Array('A'..'Z') + Array('a'..'z')
-  #   (0...8).map { charset.sample }.join
-  # end
+  def find_project
+    @project = Project.find(params[:project_id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { message: 'Project not found' }, status: :not_found
+  end
 
   def collection_params
-    params.require(:collection).permit(:name).merge(name: Faker::Lorem.word)
+    params.require(:collection).permit(:name)
   end
 end

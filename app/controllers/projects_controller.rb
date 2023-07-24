@@ -1,23 +1,23 @@
-
 class ProjectsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
+  before_action :authenticate_user, only: [:create]
+
   def create
-    # Generate random project data
-    project_name = Faker::Company.name
+    user = User.find(params[:user_id])
+    project = user.projects.build(project_params)
 
-    # Create the project
-    project = Project.create(name: project_name)
-
-    if project.persisted?
-      render json: { status: 200, project_data: { name: project.name } }
+    if project.save
+      render json: { project: { name: project.name, user_id: project.user_id } }
     else
-      render json: { status: 500, message: "Error creating project" }
+      render json: { message: project.errors.full_messages.join(', ') }, status: :bad_request
     end
   end
 
   def index
-    projects = Project.all.map { |project| { id: project.id, name: project.name } }
+    user = User.find(params[:user_id])
+    projects = user.projects.map { |project| { id: project.id, name: project.name } }
 
-    render json: { status: 200, project_data: projects }
+    render json: { project_data: projects }
   end
 
   def show
@@ -41,9 +41,9 @@ class ProjectsController < ApplicationController
           }
         ]
       }
-      render json: { status: 200, project_data: project_data }
+      render json: { project_data: project_data }
     else
-      render json: { status: 404, message: "Project not found" }
+      render json: { message: "Project not found" }, status: :not_found
     end
   end
 
@@ -52,9 +52,9 @@ class ProjectsController < ApplicationController
 
     if project
       project.destroy
-      render json: { status: 200, message: "Deleted successfully" }
+      render json: { message: "Deleted successfully" }
     else
-      render json: { status: 404, message: "Project not found" }
+      render json: { message: "Project not found" }, status: :not_found
     end
   end
 
@@ -63,9 +63,15 @@ class ProjectsController < ApplicationController
 
     if project
       project.update(name: params[:name])
-      render json: { status: 200, project_data: { name: project.name } }
+      render json: { project_data: { name: project.name } }
     else
-      render json: { status: 404, message: "Project not found" }
+      render json: { message: "Project not found" }, status: :not_found
     end
+  end
+
+  private
+
+  def project_params
+    params.require(:project).permit(:name)
   end
 end

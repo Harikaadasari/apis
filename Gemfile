@@ -57,6 +57,6 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'jwt'
 
-gem 'faker'  # For generating random data
+# gem 'faker'  # For generating random data
 
 gem 'rack-cors', :require => 'rack/cors'  # For handling Cross-Origin Resource Sharing (CORS)

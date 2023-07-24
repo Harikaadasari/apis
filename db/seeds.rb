@@ -7,22 +7,22 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # db/seeds.rb
-require 'faker'
+# require 'faker'
 
-10.times do
-  project = Project.create(name: Faker::App.name)
+# 10.times do
+#   project = Project.create(name: Faker::App.name)
 
-  5.times do
-    collection = project.collections.create(name: Faker::App.name)
+#   5.times do
+#     collection = project.collections.create(name: Faker::App.name)
 
-    10.times do
-      collection.apis.create(
-        name: Faker::App.name,
-        method: ['GET', 'POST', 'PUT', 'DELETE'].sample,
-        path: Faker::Internet.url,
-        requestheader: Faker::Lorem.sentence,
-        requestbody: Faker::Lorem.paragraph
-      )
-    end
-  end
-end
+#     10.times do
+#       collection.apis.create(
+#         name: Faker::App.name,
+#         method: ['GET', 'POST', 'PUT', 'DELETE'].sample,
+#         path: Faker::Internet.url,
+#         requestheader: Faker::Lorem.sentence,
+#         requestbody: Faker::Lorem.paragraph
+#       )
+#     end
+#   end
+# end
