@@ -20,7 +20,4 @@ test:
 
 production:
   <<: *default
-  database: your_app_name_production
-  username: your_postgres_username
-  password: your_postgres_password
-  host: your_postgres_host
+  url: <%= ENV['DATABASE_URL'] %>
