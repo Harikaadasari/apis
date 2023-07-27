@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_24_061248) do
+ActiveRecord::Schema.define(version: 2023_07_27_104300) do
 
   create_table "apis", force: :cascade do |t|
     t.string "name"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2023_07_24_061248) do
     t.text "request_body"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.json "response_template"
+    t.json "request_params", default: {}
     t.index ["collection_id"], name: "index_apis_on_collection_id"
   end
 

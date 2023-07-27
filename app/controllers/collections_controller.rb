@@ -1,6 +1,6 @@
 class CollectionsController < ApplicationController
- skip_before_action :verify_authenticity_token, only: [:create]
-  before_action :find_project, only: [:create, :index, :show, :destroy]
+   before_action :find_project
+  skip_before_action :verify_authenticity_token
 
 
   def create

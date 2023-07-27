@@ -60,3 +60,5 @@ gem 'jwt'
 # gem 'faker'  # For generating random data
 
 gem 'rack-cors', :require => 'rack/cors'  # For handling Cross-Origin Resource Sharing (CORS)
+
+gem 'pg'

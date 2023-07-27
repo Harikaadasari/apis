@@ -12,17 +12,21 @@ Rails.application.routes.draw do
   end
 
   resources :projects, only: [:show, :update, :destroy] do
-    resources :collections, only: [:index] # Nested route for collections under projects
+    resources :collections, only: [:create, :index, :show, :destroy] # Nested route for collections under projects
   end
 
-  resources :collections, only: [] do
-    resources :apis, only: [:index, :show, :destroy, :update]
+  resources :collections do
+    resources :apis, only: [:create, :index, :show, :destroy]
+    get 'all_apis', on: :collection # Use `:collection` instead of `:member`
   end
-  
 
   # Route for creating an API under a collection without nesting under collections
   post '/projects/:project_id/collections/:collection_id/apis', to: 'apis#create'
 
   # Route for showing the details of a single API
   get '/projects/:project_id/collections/:collection_id/apis/:id', to: 'apis#show'
+
+  # Route for dynamically handling user-created paths
+  match '/*path', to: 'apis#dynamic_show', via: [:get, :post]
+  
 end
