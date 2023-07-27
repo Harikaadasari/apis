@@ -61,4 +61,4 @@ gem 'jwt'
 
 gem 'rack-cors', :require => 'rack/cors'  # For handling Cross-Origin Resource Sharing (CORS)
 
-gem 'pg'
+gem 'pg', '~> 1.5', '>= 1.5.3'

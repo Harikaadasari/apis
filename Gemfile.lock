@@ -227,7 +227,7 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   jwt
   listen (~> 3.2)
-  pg
+  pg (~> 1.5, >= 1.5.3)
   puma (~> 4.1)
   rack-cors
   rails (~> 6.0.6, >= 6.0.6.1)
