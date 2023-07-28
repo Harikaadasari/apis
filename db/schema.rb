@@ -51,5 +51,5 @@ ActiveRecord::Schema.define(version: 2023_07_27_104300) do
     t.string "password_digest"
   end
 
-  add_foreign_key "collections", "projects"
+  
 end
